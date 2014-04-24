@@ -119,6 +119,7 @@ def scanDirectories(curDir, fullList):
 		# Add each parent directory this subdirectory is part of
 		while curPath != fullList[0].path:
 			fullList[-1].addSubdir(dirname(curPath))
+			curPath = dirname(curPath)
 
 		# Add each file to the list
 		for f in files:
@@ -130,7 +131,7 @@ def scanDirectories(curDir, fullList):
 	return fullList
 
 
-# Main Function
+# Computer statistics for all Java files found
 if __name__ == '__main__':
 	# Obtain a list of DirStats for each directory
 	stats = scanDirectories(getcwd(), [DirStat(getcwd())])
@@ -138,35 +139,11 @@ if __name__ == '__main__':
 	# Distribute the obtained stats to all parent directories
 	for s in stats:
 		s.distributeStats(stats)
+		print(stats[0].totalSize, ':', s.totalSize)
 
 	# Print all the data
 	for s in stats:
 		s.pprint()
-
-	# Make sure the numbers add up
-	verification = [0 for x in range(5)]
-
-	for i in range(1, len(stats)):
-		verification[0] += stats[i].totalSize
-		verification[1] += stats[i].publicCount
-		verification[2] += stats[i].privateCount
-		verification[3] += stats[i].tryCount
-		verification[4] += stats[i].catchCount
-
-	if verification[0] != stats[0].totalSize:
-		print("Mismatch! Total %d, found %d\n" % (stats[0].totalSize, verification[0]))
-
-	if verification[1] != stats[0].publicCount:
-		print("Mismatch! Total %d, found %d\n" % (stats[0].publicCount, verification[1]))
-
-	if verification[2] != stats[0].privateCount:
-		print("Mismatch! Total %d, found %d\n" % (stats[0].privateCount, verification[2]))
-
-	if verification[3] != stats[0].tryCount:
-		print("Mismatch! Total %d, found %d\n" % (stats[0].tryCount, verification[3]))
-
-	if verification[4] != stats[0].catchCount:
-		print("Mismatch! Total %d, found %d\n" % (stats[0].catchCount, verification[4]))
 
 
 
