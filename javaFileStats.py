@@ -100,9 +100,7 @@ class DirStat():
 		print("%s\nBytes: %d\nPublics: %d\nPrivates: %d\nTrys: %d\nCatches: %d\n" % 
 			 (self.path, self.totalSize, self.publicCount, self.privateCount, self.tryCount, self.catchCount))
 
-		print("Parents: %s\n" % '\n'.join(self.subdirectories))
-
-		#print("DirStat:\n\tPath: %s\n\t\tSubdirs: %s\n\t\t Files: %s\n" % (self.path, '\n'.join(self.subdirectories), '\n'.join(self.files)))
+		#print("Parents: %s\n" % '\n'.join(self.subdirectories))
 
 
 # Scan all directories down from root and return list
@@ -139,7 +137,7 @@ if __name__ == '__main__':
 	# Distribute the obtained stats to all parent directories
 	for s in stats:
 		s.distributeStats(stats)
-		print(stats[0].totalSize, ':', s.totalSize)
+		#print(stats[0].totalSize, ':', s.totalSize)
 
 	# Print all the data
 	for s in stats:
