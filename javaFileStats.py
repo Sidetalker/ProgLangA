@@ -1,8 +1,11 @@
+from sys import argv, exit
 from os import listdir, getcwd
 from os.path import isfile, isdir, join, dirname, getsize
 
 # Retrieve basic statistics of the given java file
 def getJavaStats(javaFile):
+	print("%s" % javaFile)
+
 	# Open the java file for reading
 	f = open(javaFile, 'r')
 	multiCommentFlag = False
@@ -108,7 +111,12 @@ def scanDirectories(curDir, fullList):
 	# Obtain all .java files and directories in the current dir
 	files = [join(curDir, f) for f in listdir(curDir) if (isfile(join(curDir,f)) and f[-5:] == '.java')]
 	directories = [join(curDir, d) for d in listdir(curDir) if isdir(join(curDir,d))]
-	
+
+	# Add each file to the list
+	for f in files:
+		print("shiet")
+		fullList[-1].addFile(f)
+
 	# Recurse into all directories and add them to the list
 	for d in directories:
 		curPath = d
@@ -119,10 +127,6 @@ def scanDirectories(curDir, fullList):
 			fullList[-1].addSubdir(dirname(curPath))
 			curPath = dirname(curPath)
 
-		# Add each file to the list
-		for f in files:
-			fullList[-1].addFile(f)
-
 		# Recurse
 		scanDirectories(d, fullList)
 
@@ -131,13 +135,17 @@ def scanDirectories(curDir, fullList):
 
 # Computer statistics for all Java files found
 if __name__ == '__main__':
+	# Parse command line argument(s)
+	if len(argv) != 2:
+		print("Usage: %s <root directory>" % argv[0])
+		exit()
+
 	# Obtain a list of DirStats for each directory
-	stats = scanDirectories(getcwd(), [DirStat(getcwd())])
+	stats = scanDirectories(argv[1], [DirStat(argv[1])])
 
 	# Distribute the obtained stats to all parent directories
 	for s in stats:
 		s.distributeStats(stats)
-		#print(stats[0].totalSize, ':', s.totalSize)
 
 	# Print all the data
 	for s in stats:
