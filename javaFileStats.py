@@ -4,8 +4,6 @@ from os.path import isfile, isdir, join, dirname, getsize
 
 # Retrieve basic statistics of the given java file
 def getJavaStats(javaFile):
-	print("%s" % javaFile)
-
 	# Open the java file for reading
 	f = open(javaFile, 'r')
 	multiCommentFlag = False
@@ -100,10 +98,9 @@ class DirStat():
 
 	# Pretty print yourself
 	def pprint(self):
-		print("%s\nBytes: %d\nPublics: %d\nPrivates: %d\nTrys: %d\nCatches: %d\n" % 
-			 (self.path, self.totalSize, self.publicCount, self.privateCount, self.tryCount, self.catchCount))
-
-		#print("Parents: %s\n" % '\n'.join(self.subdirectories))
+		# Could improve output using word.ljust and assigning column widths
+		print("%s :\n\t%d  bytes\t%d  public\t%d  private\t%d  try\t\t%d  catch" % 
+			(self.path, self.totalSize, self.publicCount, self.privateCount, self.tryCount, self.catchCount))
 
 
 # Scan all directories down from root and return list
@@ -114,7 +111,6 @@ def scanDirectories(curDir, fullList):
 
 	# Add each file to the list
 	for f in files:
-		print("shiet")
 		fullList[-1].addFile(f)
 
 	# Recurse into all directories and add them to the list
